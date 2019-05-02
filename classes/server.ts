@@ -38,7 +38,7 @@ export default class Server {
             socket.disconnect(client);
 
             // Listen messages
-            socket.message(client);
+            socket.message(client, this.io);
         });
     }
 
