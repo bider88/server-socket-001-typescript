@@ -36,6 +36,9 @@ export default class Server {
 
             // Disconnect
             socket.disconnect(client);
+
+            // Listen messages
+            socket.message(client);
         });
     }
 
