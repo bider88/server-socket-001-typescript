@@ -10,9 +10,21 @@ export const disconnect = (client: Socket) => {
 
 // Listen messages
 export const message = (client: Socket, io: socketIO.Server) => {
-    client.on('message', (payload: PayloadInterface, callback: Function) => {
+    client.on('message', (payload: PayloadInterface) => {
         console.log(`Message received`, payload);
 
         io.emit('newMessage', payload);
+    });
+}
+
+// user configuration
+export const userConfiguration = (client: Socket, io: socketIO.Server) => {
+    client.on('user-configuration', (payload: { name: string}, callback: Function) => {
+        console.log(`user-configuration received`, payload.name);
+
+        callback({
+            ok: true,
+            message: `User ${payload.name} configurated`
+        });
     });
 }

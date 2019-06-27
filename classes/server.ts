@@ -39,6 +39,9 @@ export default class Server {
 
             // Listen messages
             socket.message(client, this.io);
+
+            // User configuration
+            socket.userConfiguration(client, this.io);
         });
     }
 
