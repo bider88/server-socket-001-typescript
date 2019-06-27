@@ -1,10 +1,20 @@
 import { Socket } from 'socket.io';
 import socketIO from 'socket.io';
 import { PayloadInterface } from '../interfaces/payload.interface';
+import { UserList } from '../classes/user-list';
+import { User } from '../classes/user';
+
+export const connectedUsers = new UserList();
+
+export const connectCLient = (client: Socket) => {
+    const user = new User(client.id);
+    connectedUsers.addUser(user);
+}
 
 export const disconnect = (client: Socket) => {
     client.on('disconnect', () => {
-        console.log('Client disconnected');
+        const userDeleted: User | undefined = connectedUsers.deleteUser(client.id);
+        console.log('Client disconnected and deleted', userDeleted ? userDeleted : 'User not founded');
     })
 }
 
@@ -20,7 +30,8 @@ export const message = (client: Socket, io: socketIO.Server) => {
 // user configuration
 export const userConfiguration = (client: Socket, io: socketIO.Server) => {
     client.on('user-configuration', (payload: { name: string}, callback: Function) => {
-        console.log(`user-configuration received`, payload.name);
+
+        connectedUsers.updateName(client.id, payload.name);
 
         callback({
             ok: true,
