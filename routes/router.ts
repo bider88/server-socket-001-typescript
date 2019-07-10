@@ -3,6 +3,8 @@ import Server from '../classes/server';
 
 const router = Router();
 
+const server = Server.instance;
+
 router.get('/messages', (req: Request, res: Response) => {
     res.json({
         ok: true,
@@ -14,11 +16,17 @@ router.post('/messages', (req: Request, res: Response) => {
 
     const { body, from } = req.body;
 
+    const payload = {
+        message: 'POST: All Ok!',
+        from,
+        body
+    }
+
+    server.io.emit('newMessage', payload);
+
     res.json({
         ok: true,
-        message: 'POST: All Ok!',
-        body,
-        from
+        ...payload
     })
 });
 
@@ -29,18 +37,16 @@ router.post('/messages/:id', (req: Request, res: Response) => {
 
     const payload = {
         from,
-        body
+        body,
+        id
     }
 
-    const server = Server.instance;
-
-    server.io.in(id).emit('private-message', payload)
+    server.io.in(id).emit('private-message', payload);
 
     res.json({
         ok: true,
         message: 'POST: All Ok!',
-        ...payload,
-        id
+        ...payload
     })
 });
 
