@@ -1,3 +1,4 @@
+import { connectedUsers } from './../sockets/socket';
 import { Router, Request, Response } from 'express';
 import Server from '../classes/server';
 import { Socket } from 'net';
@@ -58,13 +59,21 @@ router.get('/users', (req: Request, res: Response) => {
             return res.json({
                 ok: false,
                 error: err
-            });
+            })
         }
 
         res.json({
             ok: true,
             clients
         })
+    })
+});
+
+router.get('/users-detail', (req, res) => {
+
+    res.json({
+        ok: true,
+        clients: connectedUsers.getListOfUsers()
     })
 });
 
