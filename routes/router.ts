@@ -70,7 +70,6 @@ router.get('/users', (req: Request, res: Response) => {
 });
 
 router.get('/users-detail', (req, res) => {
-
     res.json({
         ok: true,
         clients: connectedUsers.getListOfUsers()
