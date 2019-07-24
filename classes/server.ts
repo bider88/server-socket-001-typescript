@@ -40,7 +40,7 @@ export default class Server {
             socket.userConfiguration(client, this.io);
 
             // Disconnect
-            socket.disconnect(client);
+            socket.disconnect(client, this.io);
 
             // Listen messages
             socket.message(client, this.io);

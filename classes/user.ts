@@ -5,7 +5,7 @@ export class User {
 
     constructor(id: string) {
         this.id = id;
-        this.name = 'no user';
+        this.name = 'no name';
         this.room = 'no room'
     }
 }

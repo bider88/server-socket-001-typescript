@@ -11,10 +11,12 @@ export const connectCLient = (client: Socket) => {
     connectedUsers.addUser(user);
 }
 
-export const disconnect = (client: Socket) => {
+export const disconnect = (client: Socket, io: socketIO.Server) => {
     client.on('disconnect', () => {
         const userDeleted: User | undefined = connectedUsers.deleteUser(client.id);
         console.log('Client disconnected and deleted', userDeleted ? userDeleted : 'User not founded');
+
+        io.emit('user-actives', connectedUsers.getListOfUsers());
     })
 }
 
@@ -33,9 +35,12 @@ export const userConfiguration = (client: Socket, io: socketIO.Server) => {
 
         connectedUsers.updateName(client.id, payload.name);
 
+        io.emit('user-actives', connectedUsers.getListOfUsers());
+
         callback({
             ok: true,
-            message: `User ${payload.name} configurated`
+            message: `User ${payload.name} configurated`,
+            user: connectedUsers.getUser(client.id)
         });
     });
 }
