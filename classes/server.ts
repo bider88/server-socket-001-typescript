@@ -44,6 +44,9 @@ export default class Server {
 
             // Listen messages
             socket.message(client, this.io);
+            
+            // Listen user list
+            socket.userList(client, this.io);
 
         });
     }

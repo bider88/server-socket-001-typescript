@@ -44,3 +44,9 @@ export const userConfiguration = (client: Socket, io: socketIO.Server) => {
         });
     });
 }
+
+export const userList = (client: Socket, io: socketIO.Server) => {
+    client.on('user-list', () => {
+        io.to(client.id).emit('user-actives', connectedUsers.getListOfUsers());
+    });
+}
